@@ -1,5 +1,7 @@
 package com.spring.radek.recipeproject.services;
 
+import com.spring.radek.recipeproject.converters.RecipeCommandToRecipe;
+import com.spring.radek.recipeproject.converters.RecipeToRecipeCommand;
 import com.spring.radek.recipeproject.domain.Recipe;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import org.junit.Before;
@@ -22,6 +24,12 @@ public class RecipeServiceImplTest {
 
     @Mock
     RecipeRepository recipeRepository;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
 
     @Before
     public void setUp() throws Exception {
