@@ -1,6 +1,8 @@
 package com.spring.radek.recipeproject.services;
 
 import com.spring.radek.recipeproject.commands.RecipeCommand;
+import com.spring.radek.recipeproject.converters.RecipeCommandToRecipe;
+import com.spring.radek.recipeproject.converters.RecipeToRecipeCommand;
 import com.spring.radek.recipeproject.domain.Recipe;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +17,15 @@ import java.util.Set;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-    private final ReCp,,
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository,
+                             RecipeCommandToRecipe recipeCommandToRecipe,
+                             RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @Override
@@ -42,6 +49,10 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
-        return null;
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("Saved RecipeId:" + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
