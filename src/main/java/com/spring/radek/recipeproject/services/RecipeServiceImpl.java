@@ -1,5 +1,6 @@
 package com.spring.radek.recipeproject.services;
 
+import com.spring.radek.recipeproject.commands.RecipeCommand;
 import com.spring.radek.recipeproject.domain.Recipe;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import java.util.Set;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final ReCp,,
 
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
@@ -36,5 +38,10 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return recipeOptional.get();
 
+    }
+
+    @Override
+    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+        return null;
     }
 }
