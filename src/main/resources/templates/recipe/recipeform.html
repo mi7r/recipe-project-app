@@ -17,7 +17,7 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="com.spring.radek.recipeproject.domain.Recipe"*/-->
+<!--/*@thymesVar id="recipe" type="com.spring.radek.recipeproject.commands.RecipeCommand"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -104,8 +104,8 @@
                                 <div class="col-md-12">
                                     <ul th:each="ingredient:${recipe.ingredients}">
                                         <li th:text="${(ingredient.getAmount()+' '
-                                        + ingredient.uom.getDescription()+' '
-                                        + ingredient.getDescription())}">1 Teaspoon of Sugar
+                                        + ingredient.uomCommand.getDescription()+' '
+                                        + ingredient.getDescription())}">ingredient
                                         </li>
                                     </ul>
                                 </div>
@@ -116,7 +116,6 @@
                         <div class="panel-heading">
                             <h1 class="panel-title">Directions</h1>
                         </div>
-
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12 form-group">
@@ -137,11 +136,11 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
 </div>
-
 </body>
 </html>
