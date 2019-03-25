@@ -1,6 +1,8 @@
 package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.IngredientCommand;
+import com.spring.radek.recipeproject.commands.RecipeCommand;
+import com.spring.radek.recipeproject.commands.UnitOfMeasureCommand;
 import com.spring.radek.recipeproject.services.IngredientService;
 import com.spring.radek.recipeproject.services.RecipeService;
 import com.spring.radek.recipeproject.services.UnitOfMeasureService;
@@ -38,6 +40,23 @@ public class IngredientController {
                                        @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model){
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        //todo exception if null
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        ingredientCommand.setUomCommand(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping
