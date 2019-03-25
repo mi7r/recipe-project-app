@@ -70,7 +70,7 @@ public class RecipeServiceImplTest {
 
     @Test
     public void deleteRecipeByIdTest() {
-        Long idToDelete = Long.valueOf(2L);
+        Long idToDelete = 2L;
         recipeService.deleteById(idToDelete);
         verify(recipeRepository, times(1)).deleteById(anyLong());
 

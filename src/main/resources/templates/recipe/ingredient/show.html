@@ -45,9 +45,10 @@
                     </div>
                     <table>
                         <tr>
-                            <td class="col-md-6"><a href="/">Recipes List</a></td>
+                            <td class="col-md-3"><a href="/">Recipes List</a></td>
                             <td class="col-md-6"><a href="#" th:href="@{'/recipe/'+${ingredient.getRecipeId()}+'/ingredients'}">Ingredients List</a></td>
-                            <td class="col-md-6"><a href="#" th:href="@{'/recipe/'+${ingredient.getRecipeId()} + '/ingredient/'+${ingredient.id}+'/update'}">Update</a> </td>
+                            <td class="col-md-9"><a href="#" th:href="@{'/recipe/'+${ingredient.getRecipeId()} + '/ingredient/'+${ingredient.id}+'/update'}">Update</a></td>
+                            <td class="col-md-11"><a href="#" th:href="@{'/recipe/'+${ingredient.getRecipeId()} + '/ingredient/'+${ingredient.id}+'/delete'}">Delete</a></td>
                         </tr>
                     </table>
                 </div>
