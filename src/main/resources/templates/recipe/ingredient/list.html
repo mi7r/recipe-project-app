@@ -23,11 +23,11 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-11">
+                        <div class="col-md-9">
                             <h1 class="panel-title">Ingredients</h1>
                         </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/recipe/'+${recipe.id}+'/ingredient/new'}"
+                        <div class="col-md-3">
+                            <a class="btn btn-success" href="#" th:href="@{'/recipe/'+${recipe.id}+'/ingredient/new'}"
                                role="button">New</a>
                         </div>
                     </div>
@@ -51,14 +51,17 @@
                                 ${ingredient.uomCommand.getDescription()} + ' - '+
                                 ${ingredient.description}">Tasty Goodness
                                 </td>
-                                <td><a href="#"
-                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/show'}">View</a>
+                                <td><a class="btn btn-info" href="#"
+                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/show'}"
+                                       role="button">View</a>
                                 </td>
-                                <td><a href="#"
-                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/update'}">Update</a>
+                                <td><a class="btn btn-success" href="#"
+                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/update'}"
+                                       role="button">Update</a>
                                 </td>
-                                <td><a href="#"
-                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/delete'}">Delete</a>
+                                <td><a class="btn btn-danger" href="#"
+                                       th:href="@{'/recipe/'+ ${recipe.id}+ '/ingredient/'+${ingredient.id} + '/delete'}"
+                                       role="button">Delete</a>
                                 </td>
                             </tr>
                         </table>
