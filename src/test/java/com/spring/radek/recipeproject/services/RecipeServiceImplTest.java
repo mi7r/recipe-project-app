@@ -3,6 +3,7 @@ package com.spring.radek.recipeproject.services;
 import com.spring.radek.recipeproject.converters.RecipeCommandToRecipe;
 import com.spring.radek.recipeproject.converters.RecipeToRecipeCommand;
 import com.spring.radek.recipeproject.domain.Recipe;
+import com.spring.radek.recipeproject.exceptions.NotFoundException;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +52,15 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
 
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
     }
 
     @Test
