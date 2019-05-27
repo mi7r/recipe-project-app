@@ -3,6 +3,7 @@ package com.spring.radek.recipeproject.controllers;
 import com.spring.radek.recipeproject.commands.RecipeCommand;
 import com.spring.radek.recipeproject.domain.Recipe;
 import com.spring.radek.recipeproject.exceptions.NotFoundException;
+import com.spring.radek.recipeproject.services.CategoryService;
 import com.spring.radek.recipeproject.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,9 @@ public class RecipeControllerTest {
     @Mock
     RecipeService recipeService;
 
+    @Mock
+    CategoryService categoryService;
+
     RecipeController recipeController;
 
     MockMvc mockMvc;
@@ -32,7 +36,7 @@ public class RecipeControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeController = new RecipeController(recipeService);
+        recipeController = new RecipeController(recipeService, categoryService);
         mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();

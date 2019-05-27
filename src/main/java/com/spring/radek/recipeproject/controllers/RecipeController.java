@@ -2,6 +2,7 @@ package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.RecipeCommand;
 import com.spring.radek.recipeproject.exceptions.NotFoundException;
+import com.spring.radek.recipeproject.services.CategoryService;
 import com.spring.radek.recipeproject.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,13 @@ import javax.validation.Valid;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final CategoryService categoryService;
 
     private static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, CategoryService categoryService) {
         this.recipeService = recipeService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/recipe/{id}/show")
