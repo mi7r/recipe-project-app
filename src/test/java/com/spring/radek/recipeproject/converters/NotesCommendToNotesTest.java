@@ -8,10 +8,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class NotesCommendToNotesTest {
-    public static final Long ID_VALUE = 1L;
-    public static final String RECIPE_NOTES = "notes";
+    private static final Long ID_VALUE = 1L;
+    private static final String RECIPE_NOTES = "notes";
 
-    NotesCommendToNotes converter;
+    private NotesCommendToNotes converter;
 
     @Before
     public void setUp() throws Exception {

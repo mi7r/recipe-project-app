@@ -9,10 +9,10 @@ import static org.junit.Assert.*;
 
 public class UnitOfMeasureCommandToUnitOfMeasureTest {
 
-    public static final Long ID_VALUE = 1L;
-    public static final String DESCRIPTION = "description";
+    private static final Long ID_VALUE = 1L;
+    private static final String DESCRIPTION = "description";
 
-    UnitOfMeasureCommandToUnitOfMeasure converter;
+    private UnitOfMeasureCommandToUnitOfMeasure converter;
 
     @Before
     public void setUp() throws Exception {

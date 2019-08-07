@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 
 public class CategoryToCategoryCommandTest {
 
-    public static final Long ID_VALUE = 1L;
-    public static final String DESCRIPTION = "description";
-    CategoryToCategoryCommand converter;
+    private static final Long ID_VALUE = 1L;
+    private static final String DESCRIPTION = "description";
+    private CategoryToCategoryCommand converter;
 
     @Before
     public void setUp() throws Exception {
