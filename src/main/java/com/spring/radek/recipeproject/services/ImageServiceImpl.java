@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.services;
 
 import com.spring.radek.recipeproject.domain.Recipe;
+import com.spring.radek.recipeproject.exceptions.SaveImageFileException;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void saveImageFile(Long recipeId, MultipartFile file) {
+    public void saveImageFile(Long recipeId, MultipartFile file) throws SaveImageFileException {
         try {
             Recipe recipe = recipeRepository.findById(recipeId).get();
             Byte[] byteObject = new Byte[file.getBytes().length];
@@ -35,9 +36,7 @@ public class ImageServiceImpl implements ImageService {
 
             recipeRepository.save(recipe);
         } catch (IOException e) {
-            //todo handle better
-            log.error("Error occurred", e);
-            e.printStackTrace();
+            throw new SaveImageFileException("Can not save image file. " + e);
         }
 
     }

@@ -5,6 +5,9 @@ import com.spring.radek.recipeproject.converters.IngredientCommandToIngredient;
 import com.spring.radek.recipeproject.converters.IngredientToIngredientCommand;
 import com.spring.radek.recipeproject.domain.Ingredient;
 import com.spring.radek.recipeproject.domain.Recipe;
+import com.spring.radek.recipeproject.exceptions.IngredientNotFoundException;
+import com.spring.radek.recipeproject.exceptions.NotFoundException;
+import com.spring.radek.recipeproject.exceptions.UOMNotFoundException;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import com.spring.radek.recipeproject.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +39,17 @@ public class IngredientServiceImpl implements IngredientService {
     public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if (!recipeOptional.isPresent()) {
-            //todo impl error handling
-            log.error("recipe id not found. Id: " + recipeId);
+            throw new NotFoundException("Recipe ID : " + recipeId + " not found.");
         }
 
         Recipe recipe = recipeOptional.get();
 
         Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
                 .filter(ingredient -> ingredient.getId().equals(ingredientId))
-                .map(ingredient -> ingredientToIngredientCommand.convert(ingredient)).findFirst();
+                .map(ingredientToIngredientCommand::convert).findFirst();
 
         if (!ingredientCommandOptional.isPresent()) {
-            //todo impl error handling
-            log.error("ingredient id not found: " + ingredientId);
+            throw new IngredientNotFoundException("Ingredient id: " + ingredientId + " not found.");
         }
 
         return ingredientCommandOptional.get();
@@ -77,7 +78,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
                         .findById(command.getUomCommand().getId())
-                        .orElseThrow(() -> new RuntimeException("UOM not found"))); //todo implement this
+                        .orElseThrow(() -> new UOMNotFoundException("UOM not found")));
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
                 ingredient.setRecipe(recipe);
