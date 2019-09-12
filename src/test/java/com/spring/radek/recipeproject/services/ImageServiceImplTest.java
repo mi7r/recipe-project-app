@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.services;
 
 import com.spring.radek.recipeproject.domain.Recipe;
+import com.spring.radek.recipeproject.exceptions.SaveImageFileException;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    public void saveImageFile() throws IOException {
+    public void saveImageFile() throws IOException, SaveImageFileException {
         Long id =1L;
 
         MultipartFile multipartFile = new MockMultipartFile

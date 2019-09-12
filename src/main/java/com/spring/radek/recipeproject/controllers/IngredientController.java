@@ -21,6 +21,8 @@ public class IngredientController {
     private final IngredientService ingredientService;
     private final UnitOfMeasureService unitOfMeasureService;
 
+    private static final String INGREDIENT_ATTRIBUTE = "ingredient";
+
     public IngredientController(RecipeService recipeService, IngredientService ingredientService,
                                 UnitOfMeasureService unitOfMeasureService) {
         this.recipeService = recipeService;
@@ -39,18 +41,15 @@ public class IngredientController {
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable String recipeId,
                                        @PathVariable String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute(INGREDIENT_ATTRIBUTE, ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
     }
 
     @GetMapping("/recipe/{recipeId}/ingredient/new")
     public String newRecipe(@PathVariable String recipeId, Model model) {
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
-        //todo exception if null
-
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(Long.valueOf(recipeId));
-        model.addAttribute("ingredient", ingredientCommand);
+        model.addAttribute(INGREDIENT_ATTRIBUTE, ingredientCommand);
 
         ingredientCommand.setUomCommand(new UnitOfMeasureCommand());
 
@@ -62,7 +61,7 @@ public class IngredientController {
     @GetMapping("recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId,
                                          @PathVariable String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute(INGREDIENT_ATTRIBUTE, ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
     }

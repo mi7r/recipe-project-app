@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.RecipeCommand;
+import com.spring.radek.recipeproject.exceptions.SaveImageFileException;
 import com.spring.radek.recipeproject.services.ImageService;
 import com.spring.radek.recipeproject.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class ImageController {
     }
 
     @PostMapping("recipe/{id}/image")
-    public String postImage(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) {
+    public String postImage(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) throws SaveImageFileException {
         imageService.saveImageFile(Long.valueOf(id), file);
 
         return "redirect:/recipe/" + id + "/show";

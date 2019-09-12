@@ -2,6 +2,7 @@ package com.spring.radek.recipeproject.services;
 
 import com.spring.radek.recipeproject.commands.CategoryCommand;
 import com.spring.radek.recipeproject.converters.CategoryToCategoryCommand;
+import com.spring.radek.recipeproject.domain.Category;
 import com.spring.radek.recipeproject.repositories.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
