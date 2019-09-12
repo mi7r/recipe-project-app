@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.services;
 
 import com.spring.radek.recipeproject.domain.Recipe;
+import com.spring.radek.recipeproject.exceptions.NotFoundException;
 import com.spring.radek.recipeproject.exceptions.SaveImageFileException;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public void saveImageFile(Long recipeId, MultipartFile file) throws SaveImageFileException {
         try {
-            Recipe recipe = recipeRepository.findById(recipeId).get();
+            Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(NotFoundException::new);
             Byte[] byteObject = new Byte[file.getBytes().length];
 
             int i = 0;

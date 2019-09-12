@@ -97,8 +97,8 @@ public class IngredientServiceImpl implements IngredientService {
                         .filter(recipeIngredients -> recipeIngredients.getUom().getId().equals(command.getUomCommand().getId()))
                         .findFirst();
             }
-            //todo check for fail
-            return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+
+            return ingredientToIngredientCommand.convert(savedIngredientOptional.orElseThrow(NotFoundException::new));
 
         }
     }

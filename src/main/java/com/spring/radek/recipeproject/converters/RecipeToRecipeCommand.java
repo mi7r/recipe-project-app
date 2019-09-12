@@ -43,12 +43,12 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         recipeCommand.setDifficulty(source.getDifficulty());
         recipeCommand.setNotes(notesConverter.convert(source.getNotes()));
 
-        if (source.getIngredients() != null && source.getIngredients().size() > 0) {
+        if (source.getIngredients() != null && !source.getIngredients().isEmpty()) {
             source.getIngredients().forEach(ingredient -> recipeCommand
                     .getIngredients().add(ingredientConverter.convert(ingredient)));
         }
 
-        if (source.getCategories() != null && source.getCategories().size() > 0) {
+        if (source.getCategories() != null && !source.getCategories().isEmpty()) {
             source.getCategories().forEach(category -> recipeCommand
                     .getCategories().add(categoryConverter.convert(category)));
         }
