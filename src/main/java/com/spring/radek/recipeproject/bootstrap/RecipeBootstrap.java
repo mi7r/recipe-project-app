@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.bootstrap;
 
 import com.spring.radek.recipeproject.domain.*;
+import com.spring.radek.recipeproject.exceptions.NotFoundException;
 import com.spring.radek.recipeproject.repositories.CategoryRepository;
 import com.spring.radek.recipeproject.repositories.RecipeRepository;
 import com.spring.radek.recipeproject.repositories.UnitOfMeasureRepository;
@@ -10,7 +11,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
+    private static final String EXPECTED_UOM_NOT_FOUND = "Expected UOM not found.";
+
     public RecipeBootstrap(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
@@ -33,7 +39,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         recipeRepository.saveAll(getReceips());
-        log.debug("loading bootstrap data.");
+        log.debug("// Loading bootstrap data.");
     }
 
     private List<Recipe> getReceips() {
@@ -42,36 +48,36 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
         if (!eachUomOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM not found.");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         Optional<UnitOfMeasure> tableSpoonUomOptional = unitOfMeasureRepository.findByDescription("Tablespoon");
 
         if (!tableSpoonUomOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM not found.");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         Optional<UnitOfMeasure> teaSpoonOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
         if (!teaSpoonOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM not found");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         Optional<UnitOfMeasure> dashUomOptional = unitOfMeasureRepository.findByDescription("Dash");
 
         if (!dashUomOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM Not Found");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         Optional<UnitOfMeasure> pinchUomOptional = unitOfMeasureRepository.findByDescription("Pinch");
 
         if (!pinchUomOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM Not Found");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         Optional<UnitOfMeasure> cupsUomOptional = unitOfMeasureRepository.findByDescription("Cup");
 
         if (!cupsUomOptional.isPresent()) {
-            throw new RuntimeException("Expected UOM Not Found");
+            throw new NotFoundException(EXPECTED_UOM_NOT_FOUND);
         }
 
         UnitOfMeasure eachUom = eachUomOptional.get();
@@ -84,13 +90,13 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Optional<Category> americanCategoryOptional = categoryRepository.findByDescription("American");
 
         if (!americanCategoryOptional.isPresent()) {
-            throw new RuntimeException("Expected Category Not Found");
+            throw new NotFoundException("Expected Category Not Found");
         }
 
         Optional<Category> mexicanCategoryOptional = categoryRepository.findByDescription("Mexican");
 
         if (!mexicanCategoryOptional.isPresent()) {
-            throw new RuntimeException("Expected Category Not Found");
+            throw new NotFoundException("Expected Category Not Found");
         }
 
         Category americanCategory = americanCategoryOptional.get();
@@ -194,8 +200,26 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.getCategories().add(americanCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
-
         recipes.add(tacosRecipe);
+
+        try {
+            File exampleImage = new File("src/main/resources/static/images/example_image.jpg");
+
+            byte[] bytes = Files.readAllBytes(exampleImage.toPath());
+            Byte[] bytesBoxed = new Byte[bytes.length];
+            int i = 0;
+            for (byte tempByte : bytes) {
+                bytesBoxed[i++] = tempByte;
+            }
+
+            guacRecipe.setImage(bytesBoxed);
+            tacosRecipe.setImage(bytesBoxed);
+            log.info("// Image loaded.");
+
+        } catch (IOException e) {
+            log.error(String.valueOf(e));
+        }
+
         return recipes;
     }
 }
