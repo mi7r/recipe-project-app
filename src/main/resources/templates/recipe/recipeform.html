@@ -53,8 +53,8 @@
 
                                     <ul>
                                         <li th:each="item : ${categoriesList}">
-                                            <input type="checkbox" th:field="*{categories}" th:value="${item.getId()}"/>
-                                            <label th:for="${#ids.prev('categories')}" th:text="${item.getDescription()}"></label>
+                                            <input type="checkbox" th:field="*{categories}" th:value="${item}"/>
+                                            <label th:for="${#ids.prev('categories')}" th:text="${item.description}"></label>
                                         </li>
                                     </ul>
 
