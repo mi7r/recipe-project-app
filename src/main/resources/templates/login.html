@@ -18,26 +18,39 @@
 </head>
 <body>
 <div class="container-fluid" style="margin-top: 20px">
-    <h1>Login page</h1>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-                        <div th:if="${param.error}" class="alert alert-danger">
-                            Invalid username and password.
-                        </div>
-                        <div th:if="${param.logout}" >
-                            You have been logged out.
-                        </div>
-            <form th:action="@{/login}" method="post">
-                <label> Username: </label>
-                <input type="text" name="username"/>
-                <label> Password: </label>
-                <input type="submit" value="Log in"/>
-                <input type="password" name="password"/>
-            </form>
-        </div>
+        <div class="col-md-4">
+            <div class="panel-primary">
+                <div class="row">
 
+
+                    <h2>Login page</h2>
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        Invalid username and password.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                    </div>
+
+                    <form th:action="@{/login}" class="needs-validation" method="post">
+
+
+                        <label for="username"></label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="User name" required>
+                        <label for="password"></label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required/>
+<!--                        <div class="form-actions">-->
+                            <button type="submit" class="btn btn-primary">Log in</button>
+<!--                        </div>-->
+
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 </body>
 </html>
