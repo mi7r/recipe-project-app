@@ -21,6 +21,11 @@
 <div class="container" style="margin-top: 20px">
     <div class="row justify-content-center">
         <div class="col-md-3">
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                User with given e-mail already exists.
+            </div>
+
             <form th:object="${user}" th:action="@{/user/registration}" class="needs-validation text-center"
                   method="post">
                 <input type="hidden" th:field="*{id}"/>

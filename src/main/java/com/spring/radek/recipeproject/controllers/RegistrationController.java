@@ -1,7 +1,6 @@
 package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.UserCommand;
-import com.spring.radek.recipeproject.domain.User;
 import com.spring.radek.recipeproject.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -36,11 +35,10 @@ public class RegistrationController {
     public String registerNewUser(@Valid @ModelAttribute("user") UserCommand userCommand, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
-            return "registration";
+            return REGISTRATION_FORM;
         }
 
-        UserCommand saveUserCommand = userService.saveUserCommand(userCommand);
-        log.info("//New User Account with e-mail: " + saveUserCommand.getEmail() + " created.");
+        userService.saveUserCommand(userCommand);
         return "redirect:/login";
     }
 }

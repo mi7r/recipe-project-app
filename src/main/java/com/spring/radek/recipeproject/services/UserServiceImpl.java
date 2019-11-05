@@ -5,7 +5,7 @@ import com.spring.radek.recipeproject.converters.UserCommandToUser;
 import com.spring.radek.recipeproject.converters.UserToUserCommand;
 import com.spring.radek.recipeproject.domain.User;
 import com.spring.radek.recipeproject.exceptions.NotFoundException;
-import com.spring.radek.recipeproject.exceptions.UserAlreadyExistsException;
+import com.spring.radek.recipeproject.exceptions.EmailExistsException;
 import com.spring.radek.recipeproject.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserCommand saveUserCommand(UserCommand userCommand) {
-        Optional<User> userOptional = userRepository.findByEmail(userCommand.getEmail());
-
-        if (userOptional.isPresent()) {
-            throw new UserAlreadyExistsException("User with given e-mail address already exists.");
+        if (emailExists(userCommand.getEmail())) {
+            throw new EmailExistsException("User with given e-mail address already exists.");
         }
 
         User newUser = userCommandToUser.convert(userCommand);
-        userRepository.save(newUser);
-        log.info("User with e-mail address: " + newUser.getEmail() + " created.");
+        User savedUser = userRepository.save(newUser);
+        log.info("User with e-mail address: " + savedUser.getEmail() + " created.");
 
         return userToUserCommand.convert(newUser);
 
@@ -58,5 +56,13 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long userId) {
         userRepository.deleteById(userId);
 
+    }
+
+    private boolean emailExists(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return true;
+        }
+        return false;
     }
 }
