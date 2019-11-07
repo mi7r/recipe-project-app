@@ -1,5 +1,6 @@
 package com.spring.radek.recipeproject.commands;
 
+import com.spring.radek.recipeproject.validators.ValidEmail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,11 @@ public class UserCommand {
     @NotNull
     @NotEmpty
     private String password;
+
+
     private String matchingPassword;
 
+    @ValidEmail
     @NotNull
     @NotEmpty
     private String email;

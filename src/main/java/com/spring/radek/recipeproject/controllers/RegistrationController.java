@@ -3,6 +3,8 @@ package com.spring.radek.recipeproject.controllers;
 import com.spring.radek.recipeproject.commands.UserCommand;
 import com.spring.radek.recipeproject.exceptions.EmailExistsException;
 import com.spring.radek.recipeproject.services.UserService;
+import com.spring.radek.recipeproject.validators.EmailValidator;
+import com.spring.radek.recipeproject.validators.ValidEmail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +37,17 @@ public class RegistrationController {
     @PostMapping("user/registration")
     public String registerNewUser(@Valid @ModelAttribute("user") UserCommand userCommand, BindingResult bindingResult) {
         UserCommand registered = new UserCommand();
-        if (!bindingResult.hasErrors()) {
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            return REGISTRATION_FORM;
+
+        }
+        else if (!bindingResult.hasErrors()) {
             registered = createUserAccount(userCommand);
         }
         if (registered == null) {
-            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            bindingResult.rejectValue("email", "error.user", "This email is already in use.");
             return REGISTRATION_FORM;
         }
         return "redirect:/login";
@@ -50,7 +58,7 @@ public class RegistrationController {
         try {
             registered = userService.saveUserCommand(userCommand);
         } catch (EmailExistsException ex) {
-            log.info("This: "+userCommand.getEmail()+", e-mail address is already in use!");
+            log.info("This: " + userCommand.getEmail() + ", e-mail address is already in use!");
             return null;
         }
         return registered;
