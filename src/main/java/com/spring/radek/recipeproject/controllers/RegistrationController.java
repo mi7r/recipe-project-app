@@ -36,17 +36,18 @@ public class RegistrationController {
     public String registerNewUser(@Valid @ModelAttribute("user") UserCommand userCommand, BindingResult bindingResult) {
         UserCommand registered = new UserCommand();
 
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
-            return REGISTRATION_FORM;
-
-        }
-        else if (!bindingResult.hasErrors()) {
+        if (!bindingResult.hasErrors()) {
             registered = createUserAccount(userCommand);
         }
         if (registered == null) {
             bindingResult.rejectValue("email", "error.user", "This email is already in use.");
             return REGISTRATION_FORM;
+        }
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            bindingResult.rejectValue("password", "error.user", "Password don't match.");
+            return REGISTRATION_FORM;
+
         }
         return "redirect:/login";
     }
