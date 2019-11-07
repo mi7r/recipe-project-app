@@ -1,10 +1,8 @@
 package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.UserCommand;
-import com.spring.radek.recipeproject.exceptions.EmailExistsException;
+import com.spring.radek.recipeproject.exceptions.EmailAlreadyExistsException;
 import com.spring.radek.recipeproject.services.UserService;
-import com.spring.radek.recipeproject.validators.EmailValidator;
-import com.spring.radek.recipeproject.validators.ValidEmail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +55,7 @@ public class RegistrationController {
         UserCommand registered = null;
         try {
             registered = userService.saveUserCommand(userCommand);
-        } catch (EmailExistsException ex) {
+        } catch (EmailAlreadyExistsException ex) {
             log.info("This: " + userCommand.getEmail() + ", e-mail address is already in use!");
             return null;
         }

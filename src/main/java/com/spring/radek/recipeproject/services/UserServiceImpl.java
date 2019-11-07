@@ -5,7 +5,7 @@ import com.spring.radek.recipeproject.converters.UserCommandToUser;
 import com.spring.radek.recipeproject.converters.UserToUserCommand;
 import com.spring.radek.recipeproject.domain.User;
 import com.spring.radek.recipeproject.exceptions.NotFoundException;
-import com.spring.radek.recipeproject.exceptions.EmailExistsException;
+import com.spring.radek.recipeproject.exceptions.EmailAlreadyExistsException;
 import com.spring.radek.recipeproject.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserCommand saveUserCommand(UserCommand userCommand) {
         if (emailExists(userCommand.getEmail())) {
-            throw new EmailExistsException("User with given e-mail address already exists.");
+            throw new EmailAlreadyExistsException("User with given e-mail address already exists.");
         }
 
         User newUser = userCommandToUser.convert(userCommand);
