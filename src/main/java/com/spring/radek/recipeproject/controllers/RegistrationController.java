@@ -1,6 +1,7 @@
 package com.spring.radek.recipeproject.controllers;
 
 import com.spring.radek.recipeproject.commands.UserCommand;
+import com.spring.radek.recipeproject.exceptions.EmailExistsException;
 import com.spring.radek.recipeproject.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -33,12 +34,25 @@ public class RegistrationController {
 
     @PostMapping("user/registration")
     public String registerNewUser(@Valid @ModelAttribute("user") UserCommand userCommand, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+        UserCommand registered = new UserCommand();
+        if (!bindingResult.hasErrors()) {
+            registered = createUserAccount(userCommand);
+        }
+        if (registered == null) {
             bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
             return REGISTRATION_FORM;
         }
-
-        userService.saveUserCommand(userCommand);
         return "redirect:/login";
+    }
+
+    private UserCommand createUserAccount(UserCommand userCommand) {
+        UserCommand registered = null;
+        try {
+            registered = userService.saveUserCommand(userCommand);
+        } catch (EmailExistsException ex) {
+            log.info("This: "+userCommand.getEmail()+", e-mail address is already in use!");
+            return null;
+        }
+        return registered;
     }
 }
